@@ -10,15 +10,14 @@ export default function Wallet({ route }) {
         const dados = async () =>
         {
             try {
-                const response = await fetch(`http://192.168.1.13:3000/api/wallet/${route.params.id}/transactions`, {
+                const response = await fetch(`http://192.168.1.13:3000/transaction/year/${route.params.year}/month/${route.params.month}`, {
                     method: 'GET', 
                     headers: {
-                    'Content-Type': 'application/json',  
+                        'Content-Type': 'application/json',  
                     },
                 });
                 const data = await response.json(); 
-                setRetorno(data.transactions);
-                console.warn(data.transactions)
+                setRetorno(data);
             } catch (error) {
                 console.error('Erro ao fazer PUT:', error);
             }
@@ -43,9 +42,9 @@ export default function Wallet({ route }) {
                     <View style={styles.container} key={transaction.id}>
                         <View style={styles.card}>
                             <Text style={styles.title}>{transaction.name} </Text>
-                            <Text style={styles.info}>Valor Médio: <Text style={styles.highlight}>R$ {transaction.averageValue}   </Text></Text>
-                            <Text style={styles.info}>Quantidade: <Text style={styles.highlight}>{transaction.quantity.toFixed(2).replace(".",",")}    </Text></Text>
-                            <Text style={styles.info}>Total Investido: <Text style={styles.highlight}>R$ {(transaction.averageValue * transaction.quantity).toFixed(2)}</Text></Text>
+                            <Text style={styles.info}>Valor Médio: <Text style={styles.highlight}>R$ {23}   </Text></Text>
+                            <Text style={styles.info}>Quantidade: <Text style={styles.highlight}>{(2.345).toFixed(2).replace(".",",")}    </Text></Text>
+                            <Text style={styles.info}>Total Investido: <Text style={styles.highlight}>R$ {(23 * 2).toFixed(2)}</Text></Text>
                             <Text style={styles.info}>Valor Atual: <Text style={styles.highlight}>R$ {}</Text></Text>
                             <Text style={[styles.info, profitLossColor]}>Lucro/Prejuízo: R$ {123}</Text>
                         </View>

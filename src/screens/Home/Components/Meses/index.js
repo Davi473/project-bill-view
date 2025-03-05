@@ -1,20 +1,23 @@
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+
 import Icon from "react-native-vector-icons/MaterialIcons"; 
 
-export default function Wallets(props) {
+const mesesDoAno = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Aug", "Set", "Out", "Nov", "Dez"];
+
+export default function Meses(props) {
   return (
       <View style={styles.ultimosCartoes}>
         <Text>Meses</Text>
         <FlatList 
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          alwaysBounceHorizontal={true}
-          data={props.wallets}
+        //   horizontal
+        //   showsHorizontalScrollIndicator={false}
+        //   alwaysBounceHorizontal={true}
+          data={props.meses}
           renderItem={({item}) => {
             return (
             <TouchableOpacity
                 onPress={() => {
-                    props.navigation.navigate("Wallet", {id: item.id, name: item.name});
+                    props.navigation.navigate("Mes", {mes: item.mes, ano: item.ano});
                 }}
             >
               <View style={styles.containerCartao}>
@@ -23,7 +26,7 @@ export default function Wallets(props) {
                     <View style={styles.cartaoBody}>
                         <View style={styles.cardHeader}>
                             <Text style={styles.cardTitle}>
-                                {item.name}
+                                {`${mesesDoAno[(item.mes - 1)]}/${item.ano}`}
                             </Text>
                             <Text style={styles.cardIcon}>
                               <Icon name="calendar-today" size={24} color="black" /> 
@@ -31,7 +34,10 @@ export default function Wallets(props) {
                         </View>
                         <View style={styles.alinhasValores}>
                             <Text style={styles.cardText}>
-                                Meta: {item.coin} <Text>{item.valueTarget.toFixed(2).replace(".",",")}  </Text>
+                                Entrada: R$<Text>{item.amountIncome.toFixed(2).replace(".",",")}  </Text>
+                            </Text>
+                            <Text style={styles.cardText}>
+                                Saida: R$<Text>{item.amountExpense.toFixed(2).replace(".",",")}  </Text>
                             </Text>
                         </View>
                     </View>
@@ -41,7 +47,7 @@ export default function Wallets(props) {
             </TouchableOpacity>
             )
           }}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(index) => index}
           nestedScrollEnabled={true}
         />
       </View>

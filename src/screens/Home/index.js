@@ -1,6 +1,6 @@
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import Saudacao from './Saudacao';
-
+import Saudacao from './Components/Saudacao';
+import Meses from "./Components/Meses"
 
 export default function Home(props) {
     const [retorno, setRetorno] = useState(null);
@@ -9,7 +9,7 @@ export default function Home(props) {
         const dados = async () =>
         {
             try {
-                const response = await fetch('http://192.168.1.13:3000/transaction/', {
+                const response = await fetch('http://192.168.1.13:3000/months', {
                     method: 'GET', 
                     headers: {
                         'Content-Type': 'application/json',  
@@ -31,7 +31,7 @@ export default function Home(props) {
           retorno  ?
             <View>
                 <Saudacao nickName={"Davi"} />
-                {/* <Wallets wallets={retorno.wallet} navigation={props.navigation} /> */}
+                <Meses meses={retorno} navigation={props.navigation} />
             </View>
           : 
             <View>
