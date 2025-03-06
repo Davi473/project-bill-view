@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "myCamera",
-    "slug": "myCamera",
+    "name": "bill-view",
+    "slug": "bill-view",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

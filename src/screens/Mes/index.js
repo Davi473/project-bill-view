@@ -5,7 +5,6 @@ const mesesDoAno = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Aug", "Set
 
 export default function Mes({ route }) {
     const [retorno, setRetorno] = useState(null);
-    const profitLossColor = 
 
     useEffect(() =>
     {
@@ -48,7 +47,7 @@ export default function Mes({ route }) {
                             <Text style={styles.title}>{transaction.description} </Text>
                             <Text style={styles.info}>Valor: <Text style={[styles.highlight, (transaction.type === "income" ? styles.profit : styles.loss)]}>R$ {transaction.amount}</Text></Text>
                             <Text style={styles.info}>Data: <Text style={styles.highlight}>{new Date(transaction.date).toLocaleDateString()}</Text></Text>
-                            </View>
+                        </View>
                     </View>
                 ))
             ) : 
