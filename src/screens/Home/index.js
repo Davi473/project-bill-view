@@ -36,7 +36,7 @@ export default function Home(props) {
                 <Meses meses={retorno} navigation={props.navigation} />
             </View>
           : 
-            <View>
+            <View style={styles.carregando}>
                 <Text>Carregando...</Text>
             </View>
         }
@@ -47,6 +47,10 @@ export default function Home(props) {
 const styles = StyleSheet.create({
     container: {
         padding: 20,
-        marginTop: 0,
+        marginTop: 0, 
     },
+    carregando: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+    }
 });

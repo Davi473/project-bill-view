@@ -1,75 +1,101 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, ScrollView, Text, View } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
-import Icon from "react-native-vector-icons/MaterialIcons"; 
+
 
 const screenWidth = Dimensions.get('window').width;
 
+const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
+
 export default function Grafico(props) {
+    const [retorno, setRetorno] = useState();
 
-    useEffect(() => {
-
-    }, []);
-
-    // Dados para o gráfico com 2 linhas
-    const data = {
-        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho'], // Eixo X
-        datasets: [
-        {
-            data: [20, 45, 28, 80, 99, 43], // Linha 1
-            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // Cor da Linha 1
-            strokeWidth: 2, // Espessura da linha 1
-        },
-        {
-            data: [10, 50, 30, 70, 90, 60], // Linha 2
-            color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, // Cor da Linha 2
-            strokeWidth: 2, // Espessura da linha 2
-        },
-        ],
-    };
+    useEffect(() =>{
+        const dados = async () => {
+            try {
+                console.warn(route.params)
+                const response = await fetch(`http://192.168.1.13:3000/months`, {
+                    method: 'GET', 
+                    headers: {
+                        'Content-Type': 'application/json',  
+                    },
+                });
+                const responseJson = await response.json(); 
+                console.log(responseJson);
+                if (responseJson) retorno;
+                const data = responseJson.reduce((data, mes) => {
+                    data.labels.push[meses[(mes.month - 1)]];
+                    data.datasets[0].data.push(parseFloat(mes.incomeAmount.toFixed(2)))
+                    data.datasets[1].data.push(parseFloat(mes.expenseAmount.toFixed(2)))
+                }, {
+                    labels: [],
+                    datasets: [
+                        {
+                            data: [], 
+                            color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, 
+                            strokeWidth: 2, 
+                        },
+                        {
+                            data: [], 
+                            color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`, 
+                            strokeWidth: 2, 
+                        },
+                    ]
+                });
+                setRetorno(data);
+            } catch (error) {
+                console.error('Erro ao fazer GET:', error);
+            }
+        }
+        dados(); 
+    }, []); 
 
     const calculateChartWidth = () => {
-        const baseWidth = screenWidth - 40; // Largura total disponível (margens)
-        const labelWidth = 50; // Largura média de cada label
-        const chartWidth = data.labels.length * labelWidth; // Largura total necessária para acomodar todas as labels
-    
-        return chartWidth < baseWidth ? baseWidth : chartWidth; // Garantir que o gráfico não seja maior que a tela
+        const baseWidth = screenWidth - 40; 
+        const labelWidth = 20; 
+        const chartWidth = data.labels.length * labelWidth; 
+        return chartWidth < baseWidth ? baseWidth : chartWidth;
     };
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <View style={styles.container}>
-                <View style={styles.card}>
-                    <Text style={styles.title}>
-                        {"dsfs"/* {`${mesesDoAno[(item.month - 1)]}/${item.year}`} */}
-                    </Text>
-                    <View style={{width: calculateChartWidth()}}>
-                        <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 10 }}>Gráfico de Linhas (2 Linhas)</Text>
-                        <LineChart
-                            data={data}
-                            width={calculateChartWidth()}
-                            height={220}
-                            chartConfig={{
-                                backgroundColor: '#fff',
-                                backgroundGradientFrom: '#fff',
-                                backgroundGradientTo: '#fff',
-                                decimalPlaces: 2, // Número de casas decimais
-                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Cor das etiquetas
-                                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, // Cor do texto das labels
-                                style: {
-                                borderRadius: 16,
-                                },
-                            }}
-                            bezier // Para um gráfico mais suave
-                            style={{
-                                marginVertical: 8,
-                                borderRadius: 16,
-                            }}
-                        />
+        <ScrollView style={styles.container}>
+        {
+            retorno ?
+                <View>
+                    <View style={styles.card}>
+                        <Text style={styles.title}>
+                            {`${mesesDoAno[(item.month - 1)]}/${item.year}`}
+                        </Text>
+                        <View style={styles.chartContainer}>
+                            <LineChart
+                                data={data}
+                                width={calculateChartWidth() - 100}  
+                                height={200} 
+                                chartConfig={{
+                                    backgroundColor: '#fff',
+                                    backgroundGradientFrom: '#fff',
+                                    backgroundGradientTo: '#fff',
+                                    decimalPlaces: 2, 
+                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, 
+                                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                    style: {
+                                        borderRadius: 16,
+                                    },
+                                }}
+                                bezier
+                                style={{
+                                    marginVertical: 8,
+                                    borderRadius: 16,
+                                }}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
+            :
+                <View style={styles.carregando}>
+                    <Text>Carregando...</Text>
+                </View>
+        }
         </ScrollView>
     );
 }
@@ -81,8 +107,6 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '90%',
-        maxWidth: 350,
-        padding: 15,
         borderRadius: 12,
         backgroundColor: '#ffffff',
         shadowColor: '#000',
@@ -90,13 +114,24 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 4 },
         shadowRadius: 6,
         elevation: 5,
-        marginBottom: 15,
         alignItems: 'center',
+        flexGrow: 1,
+        width: "auto",
+        height: 300
     },
     title: {
         fontSize: 18,
         fontWeight: 'bold',
         color: '#333',
-        marginBottom: 8,
     },
+    chartContainer: {
+        width: "90%",
+        height: "100%",  
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    carregando: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+    }
 });

@@ -3,6 +3,7 @@ import { Feather, Ionicons } from "@expo/vector-icons";
 
 import StackHomeRoutes from "./stackHome.routes";
 import Adicionar from "../screens/Adicionar";
+import Grafico from "../screens/Graficos";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,8 +24,16 @@ export default function TabRoutes()
                 name="adicionarRoutes"
                 component={Adicionar}
                 options={{
-                    tabBarIcon: ({ color, size }) => <Ionicons name="wallet-outline" color={color} size={size}/>,
+                    tabBarIcon: ({ color, size }) => <Ionicons name="add-circle" color={color} size={size}/>,
                     tabBarLabel: "Adicinar"
+                }}
+            />
+            <Tab.Screen
+                name="graficoRoutes"
+                component={Grafico}
+                options={{
+                    tabBarIcon: ({ color, size }) => <Ionicons name="stats-chart" color={color} size={size}/>,
+                    tabBarLabel: "Grafico"
                 }}
             />
         </Tab.Navigator>

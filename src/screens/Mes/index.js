@@ -30,7 +30,6 @@ export default function Mes({ route }) {
 
     return (
     <ScrollView>
-        <View>
             <View style={styles.container}>
                 <View style={styles.card}>
                     <View style={styles.cardBody}>
@@ -55,7 +54,6 @@ export default function Mes({ route }) {
                     <Text>Carregando...</Text>
                 </View>  
             }
-        </View>
     </ScrollView>
     );
 }

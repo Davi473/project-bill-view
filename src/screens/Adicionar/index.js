@@ -33,7 +33,7 @@ export default function Adicionar(props) {
                     <Text>Tela Adicionar</Text>
                 </View>
             : 
-                <View>
+                <View style={styles.carregando}>
                     <Text>Carregando...</Text>
                 </View>
         }
@@ -46,4 +46,8 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 0,
     },
+    carregando: {
+        justifyContent: 'center', 
+        alignItems: 'center',
+    }
 });

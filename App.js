@@ -3,8 +3,8 @@ import Grafico from "./src/screens/Graficos";
 
 export default function App() {
   return (
-    // <Routes />
-    <Grafico />
+    <Routes />
+    // <Grafico />
   );
 }
 

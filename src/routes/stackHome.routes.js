@@ -14,10 +14,16 @@ export default function StackHomeRoutes({navigation})
             <Stack.Screen 
                 name="Home" 
                 component={Home}
+                options={{
+                    headerShown: false
+                }}
             />
             <Stack.Screen 
                 name="MesView" 
                 component={Mes}
+                options={{
+                    tabBarLabel: "Mes"
+                }}
             />
         </Stack.Navigator>
     )
