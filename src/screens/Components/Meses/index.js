@@ -7,17 +7,14 @@ const mesesDoAno = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Aug", "Set
 export default function Meses(props) {
   return (
       <View style={styles.ultimosCartoes}>
-        <Text>Meses</Text>
+        <Text>Meses De Gastos</Text>
         <FlatList 
-        //   horizontal
-        //   showsHorizontalScrollIndicator={false}
-        //   alwaysBounceHorizontal={true}
           data={props.meses}
           renderItem={({item}) => {
             return (
             <TouchableOpacity
                 onPress={() => {
-                    props.navigation.navigate("Mes", {mes: item.mes, ano: item.ano});
+                    props.navigation.navigate("MesView", {mes: item.month, ano: item.year});
                 }}
             >
               <View style={styles.containerCartao}>
@@ -26,7 +23,7 @@ export default function Meses(props) {
                     <View style={styles.cartaoBody}>
                         <View style={styles.cardHeader}>
                             <Text style={styles.cardTitle}>
-                                {`${mesesDoAno[(item.mes - 1)]}/${item.ano}`}
+                                {`${mesesDoAno[(item.month - 1)]}/${item.year}`}
                             </Text>
                             <Text style={styles.cardIcon}>
                               <Icon name="calendar-today" size={24} color="black" /> 
@@ -34,10 +31,10 @@ export default function Meses(props) {
                         </View>
                         <View style={styles.alinhasValores}>
                             <Text style={styles.cardText}>
-                                Entrada: R$<Text>{item.amountIncome.toFixed(2).replace(".",",")}  </Text>
+                                Entrada: R$<Text>{item.incomeAmount.toFixed(2).replace(".",",")}  </Text>
                             </Text>
                             <Text style={styles.cardText}>
-                                Saida: R$<Text>{item.amountExpense.toFixed(2).replace(".",",")}  </Text>
+                                Saida: R$<Text>{item.expenseAmount.toFixed(2).replace(".",",")}  </Text>
                             </Text>
                         </View>
                     </View>

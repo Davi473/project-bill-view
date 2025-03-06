@@ -2,6 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Feather, Ionicons } from "@expo/vector-icons";
 
 import StackHomeRoutes from "./stackHome.routes";
+import Adicionar from "../screens/Adicionar";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,11 +20,11 @@ export default function TabRoutes()
                 }}
             />
             <Tab.Screen
-                name="walletRoutes"
-                component={StackHomeRoutes}
+                name="adicionarRoutes"
+                component={Adicionar}
                 options={{
                     tabBarIcon: ({ color, size }) => <Ionicons name="wallet-outline" color={color} size={size}/>,
-                    tabBarLabel: "Wallet"
+                    tabBarLabel: "Adicinar"
                 }}
             />
         </Tab.Navigator>

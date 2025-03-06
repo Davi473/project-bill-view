@@ -1,29 +1,33 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView} from 'react-native';
 
-export default function Wallet({ route }) {
+const mesesDoAno = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Aug", "Set", "Out", "Nov", "Dez"];
+
+export default function Mes({ route }) {
     const [retorno, setRetorno] = useState(null);
-    const profitLossColor = 12 >= 0 ? styles.profit : styles.loss;
+    const profitLossColor = 
 
     useEffect(() =>
     {
         const dados = async () =>
         {
             try {
-                const response = await fetch(`http://192.168.1.13:3000/transaction/year/${route.params.year}/month/${route.params.month}`, {
+                console.warn(route.params)
+                const response = await fetch(`http://192.168.1.13:3000/transaction/year/${route.params.ano}/month/${route.params.mes}`, {
                     method: 'GET', 
                     headers: {
                         'Content-Type': 'application/json',  
                     },
                 });
                 const data = await response.json(); 
+                console.log(data);
                 setRetorno(data);
             } catch (error) {
-                console.error('Erro ao fazer PUT:', error);
+                console.error('Erro ao fazer GET:', error);
             }
         }
         dados(); 
-    }, [globalVar]);
+    }, []);
 
     return (
     <ScrollView>
@@ -32,7 +36,7 @@ export default function Wallet({ route }) {
                 <View style={styles.card}>
                     <View style={styles.cardBody}>
                         <View style={styles.cardHeaderTitle}>
-                            <Text>Wallet {route.params.name}  </Text>
+                            <Text>Gastos de {`${mesesDoAno[(route.params.mes - 1)]}/${route.params.ano}`}  </Text>
                         </View>
                     </View>
                 </View>
@@ -41,27 +45,16 @@ export default function Wallet({ route }) {
                 retorno.map(transaction => (
                     <View style={styles.container} key={transaction.id}>
                         <View style={styles.card}>
-                            <Text style={styles.title}>{transaction.name} </Text>
-                            <Text style={styles.info}>Valor Médio: <Text style={styles.highlight}>R$ {23}   </Text></Text>
-                            <Text style={styles.info}>Quantidade: <Text style={styles.highlight}>{(2.345).toFixed(2).replace(".",",")}    </Text></Text>
-                            <Text style={styles.info}>Total Investido: <Text style={styles.highlight}>R$ {(23 * 2).toFixed(2)}</Text></Text>
-                            <Text style={styles.info}>Valor Atual: <Text style={styles.highlight}>R$ {}</Text></Text>
-                            <Text style={[styles.info, profitLossColor]}>Lucro/Prejuízo: R$ {123}</Text>
-                        </View>
+                            <Text style={styles.title}>{transaction.description} </Text>
+                            <Text style={styles.info}>Valor: <Text style={[styles.highlight, (transaction.type === "income" ? styles.profit : styles.loss)]}>R$ {transaction.amount}</Text></Text>
+                            <Text style={styles.info}>Data: <Text style={styles.highlight}>{new Date(transaction.date).toLocaleDateString()}</Text></Text>
+                            </View>
                     </View>
                 ))
             ) : 
-                retorno && retorno.length === 0 ? (
-                    retorno.map(transaction => (
-                        <View>
-                            <Text>Sem Dados</Text>
-                        </View>
-                    ))
-                ) : (
-                    <View>
-                        <Text>Carregando...</Text>
-                    </View>
-                )
+                <View>
+                    <Text>Carregando...</Text>
+                </View>  
             }
         </View>
     </ScrollView>

@@ -3,7 +3,7 @@ import { TouchableOpacity, Text } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import Home from "../screens/Home";
-import Wallet from "../screens/Home/Wallets/Wallet";
+import Mes from "../screens/Mes"
 
 const Stack = createStackNavigator();
 
@@ -16,8 +16,8 @@ export default function StackHomeRoutes({navigation})
                 component={Home}
             />
             <Stack.Screen 
-                name="Wallet" 
-                component={Wallet}
+                name="MesView" 
+                component={Mes}
             />
         </Stack.Navigator>
     )

@@ -1,6 +1,7 @@
 import { StyleSheet, ScrollView, Text, View } from 'react-native';
-import Saudacao from './Components/Saudacao';
-import Meses from "./Components/Meses"
+import { useState, useEffect } from 'react';
+import Saudacao from '../Components/Saudacao';
+import Meses from "../Components/Meses"
 
 export default function Home(props) {
     const [retorno, setRetorno] = useState(null);
@@ -28,6 +29,7 @@ export default function Home(props) {
         <ScrollView style={styles.container}
           showsVerticalScrollIndicator={false}
         >
+        {
           retorno  ?
             <View>
                 <Saudacao nickName={"Davi"} />
@@ -37,6 +39,7 @@ export default function Home(props) {
             <View>
                 <Text>Carregando...</Text>
             </View>
+        }
         </ScrollView>
     );
 }
