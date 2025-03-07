@@ -6,28 +6,20 @@ import { LineChart } from 'react-native-chart-kit';
 const screenWidth = Dimensions.get('window').width;
 
 const meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', "Jul", "Ago", "Set", "Out", "Nov", "Dez"];
-
-export default function Grafico(props) {
+console.warn(meses[2]);
+export default function Grafico() {
     const [retorno, setRetorno] = useState();
 
     useEffect(() =>{
         const dados = async () => {
             try {
-                console.warn(route.params)
                 const response = await fetch(`http://192.168.1.13:3000/months`, {
                     method: 'GET', 
-                    headers: {
-                        'Content-Type': 'application/json',  
-                    },
+                    headers: {'Content-Type': 'application/json'},
                 });
                 const responseJson = await response.json(); 
-                console.log(responseJson);
-                if (responseJson) retorno;
-                const data = responseJson.reduce((data, mes) => {
-                    data.labels.push[meses[(mes.month - 1)]];
-                    data.datasets[0].data.push(parseFloat(mes.incomeAmount.toFixed(2)))
-                    data.datasets[1].data.push(parseFloat(mes.expenseAmount.toFixed(2)))
-                }, {
+                if (!responseJson) retorno;
+                const data = {
                     labels: [],
                     datasets: [
                         {
@@ -41,7 +33,14 @@ export default function Grafico(props) {
                             strokeWidth: 2, 
                         },
                     ]
+                };
+                console.warn(responseJson);
+                responseJson.forEach(mes => {
+                    data.labels.push[meses[(mes.month - 1)]];
+                    data.datasets[0].data.push(parseFloat(mes.incomeAmount.toFixed(2)));
+                    data.datasets[1].data.push(parseFloat(mes.expenseAmount.toFixed(2)));
                 });
+                console.warn(data);
                 setRetorno(data);
             } catch (error) {
                 console.error('Erro ao fazer GET:', error);
@@ -53,7 +52,7 @@ export default function Grafico(props) {
     const calculateChartWidth = () => {
         const baseWidth = screenWidth - 40; 
         const labelWidth = 20; 
-        const chartWidth = data.labels.length * labelWidth; 
+        const chartWidth = retorno.labels.length * labelWidth; 
         return chartWidth < baseWidth ? baseWidth : chartWidth;
     };
 
@@ -61,40 +60,43 @@ export default function Grafico(props) {
         <ScrollView style={styles.container}>
         {
             retorno ?
-                <View>
-                    <View style={styles.card}>
-                        <Text style={styles.title}>
-                            {`${mesesDoAno[(item.month - 1)]}/${item.year}`}
-                        </Text>
-                        <View style={styles.chartContainer}>
-                            <LineChart
-                                data={data}
-                                width={calculateChartWidth() - 100}  
-                                height={200} 
-                                chartConfig={{
-                                    backgroundColor: '#fff',
-                                    backgroundGradientFrom: '#fff',
-                                    backgroundGradientTo: '#fff',
-                                    decimalPlaces: 2, 
-                                    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, 
-                                    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                                    style: {
-                                        borderRadius: 16,
-                                    },
-                                }}
-                                bezier
-                                style={{
-                                    marginVertical: 8,
+            <View>
+                <View style={styles.card}>
+                    <Text style={styles.title}>
+                        Grafico Do Ano
+                        {
+                            JSON.stringify(retorno.labels)
+                        }
+                    </Text>
+                    <View style={styles.chartContainer}>
+                        <LineChart
+                            data={retorno}
+                            width={calculateChartWidth() - 100}  
+                            height={200} 
+                            chartConfig={{
+                                backgroundColor: '#fff',
+                                backgroundGradientFrom: '#fff',
+                                backgroundGradientTo: '#fff',
+                                decimalPlaces: 2, 
+                                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`, 
+                                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                                style: {
                                     borderRadius: 16,
-                                }}
-                            />
-                        </View>
+                                },
+                            }}
+                            bezier
+                            style={{
+                                marginVertical: 8,
+                                borderRadius: 16,
+                            }}
+                        />
                     </View>
                 </View>
+            </View>
             :
-                <View style={styles.carregando}>
-                    <Text>Carregando...</Text>
-                </View>
+            <View style={styles.carregando}>
+                <Text>Carregando...</Text>
+            </View>
         }
         </ScrollView>
     );
@@ -117,9 +119,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexGrow: 1,
         width: "auto",
-        height: 300
+        height: 350
     },
     title: {
+        padding: 20,
         fontSize: 18,
         fontWeight: 'bold',
         color: '#333',

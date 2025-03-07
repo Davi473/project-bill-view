@@ -14,7 +14,7 @@ export default function Meses(props) {
             return (
             <TouchableOpacity
                 onPress={() => {
-                    props.navigation.navigate("MesView", {mes: item.month, ano: item.year});
+                    props.navigation.navigate("Mes", {mes: item.month, ano: item.year});
                 }}
             >
               <View style={styles.containerCartao}>

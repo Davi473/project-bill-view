@@ -19,11 +19,8 @@ export default function StackHomeRoutes({navigation})
                 }}
             />
             <Stack.Screen 
-                name="MesView" 
+                name="Mes" 
                 component={Mes}
-                options={{
-                    tabBarLabel: "Mes"
-                }}
             />
         </Stack.Navigator>
     )
